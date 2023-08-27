@@ -7,8 +7,8 @@ const { updateCommands } = require( './updateCommands' );
  * @returns {boolean}
  */
 function verifyRequest( req ) {
-  const signature = req.headers[ 'x-signature-ed25519' ];
-  const timestamp = req.headers[ 'x-signature-timestamp' ];
+  const signature = req.raw.headers[ 'x-signature-ed25519' ];
+  const timestamp = req.raw.headers[ 'x-signature-timestamp' ];
   return verifyKey( req.rawBody, signature, timestamp, process.env.DISCORD_PUBLIC_KEY );
 }
 
