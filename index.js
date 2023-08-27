@@ -5,11 +5,7 @@ const server = require( 'fastify' )( {
   trustProxy: true,
 } );
 
-server.get( '/', ( req, reply ) => {
-  reply.send( 'ok' );
-} );
-
-server.post( '/', executeCommand );
+server.all( '/', executeCommand );
 
 ( async () => {
   await server.listen(
