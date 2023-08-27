@@ -7,8 +7,8 @@ const { updateCommands } = require( './updateCommands' );
  * @returns {boolean}
  */
 function verifyRequest( req ) {
-  const signature = req.raw.headers[ 'x-signature-ed25519' ];
-  const timestamp = req.raw.headers[ 'x-signature-timestamp' ];
+  const signature = req.headers[ 'x-signature-ed25519' ];
+  const timestamp = req.headers[ 'x-signature-timestamp' ];
   return verifyKey( req.rawBody, signature, timestamp, process.env.DISCORD_PUBLIC_KEY );
 }
 
@@ -28,7 +28,7 @@ async function executeCommand( req, reply ) {
     const func = funcs[ name ];
 
     if ( func == null ) {
-      reply.status( 500 ).send( {
+      return reply.status( 500 ).send( {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: `The command ${ name } is not implemented!`,
@@ -41,7 +41,7 @@ async function executeCommand( req, reply ) {
     // Make the command listing up to date
     await updateCommands( interaction.data.guild_id );
   } else {
-    reply.send( {
+    return reply.send( {
       type: InteractionResponseType.PONG,
     } );
   }

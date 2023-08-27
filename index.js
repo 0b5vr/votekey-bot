@@ -1,13 +1,15 @@
 const { executeCommand } = require( './executeCommand.js' );
 
-const server = require( 'fastify' )( {
-  logger: true,
-  trustProxy: true,
-} );
-
-server.all( '/', executeCommand );
-
 ( async () => {
+  const server = require( 'fastify' )( {
+    logger: true,
+    trustProxy: true,
+  } );
+
+  await server.register( require( 'fastify-raw-body' ) );
+
+  server.all( '/', executeCommand );
+
   await server.listen(
     {
       port: process.env.PORT ?? 8080,
