@@ -1,5 +1,4 @@
 const { InteractionResponseType, InteractionType, verifyKey } = require( 'discord-interactions' );
-const { publicKey } = require( './config.json' );
 const { funcs } = require( './commands/index.js' );
 const { updateCommands } = require( './updateCommands' );
 
@@ -10,7 +9,7 @@ const { updateCommands } = require( './updateCommands' );
 function verifyRequest( req ) {
   const signature = req.headers[ 'x-signature-ed25519' ];
   const timestamp = req.headers[ 'x-signature-timestamp' ];
-  return verifyKey( req.rawBody, signature, timestamp, publicKey );
+  return verifyKey( req.rawBody, signature, timestamp, process.env.DISCORD_PUBLIC_KEY );
 }
 
 /**

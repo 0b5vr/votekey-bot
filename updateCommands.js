@@ -1,13 +1,12 @@
-const { token, appId } = require( './config.json' );
 const { REST } = require( '@discordjs/rest' );
 const { Routes } = require( 'discord-api-types/v9' );
 const { body } = require( './commands/index.js' );
 
-const rest = new REST().setToken( token );
+const rest = new REST().setToken( process.env.DISCORD_BOT_TOKEN );
 
 async function updateCommands( guildId ) {
   await rest.put(
-    Routes.applicationGuildCommands( appId, guildId ),
+    Routes.applicationGuildCommands( process.env.DISCORD_APPLICATION_ID, guildId ),
     { body },
   );
 }
