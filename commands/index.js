@@ -1,6 +1,9 @@
 const commands = [
   require( './dmping.js' ),
   require( './ping.js' ),
+  require( './pop.js' ),
+  require( './push.js' ),
+  require( './roll.js' ),
 ];
 
 const body = [];
