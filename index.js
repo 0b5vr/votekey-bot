@@ -1,5 +1,6 @@
 const { executeCommand } = require( './executeCommand.js' );
 const { verifyRequest } = require( './verifyRequest.js' );
+const { updateHandler } = require( './updateHandler.js' );
 
 ( async () => {
   const server = require( 'fastify' )( {
@@ -9,9 +10,9 @@ const { verifyRequest } = require( './verifyRequest.js' );
 
   await server.register( require( 'fastify-raw-body' ) );
 
-  server.addHook( 'preHandler', verifyRequest );
+  server.all( '/', { preHandler: verifyRequest }, executeCommand );
 
-  server.all( '/', executeCommand );
+  server.all( '/update', updateHandler );
 
   await server.listen(
     {
