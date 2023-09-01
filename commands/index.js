@@ -1,10 +1,7 @@
 const commands = [
-  require( './dmping.js' ),
-  require( './dmsend.js' ),
-  require( './ping.js' ),
-  require( './pop.js' ),
-  require( './push.js' ),
-  require( './roll.js' ),
+  require( './votekeyadd.js' ),
+  require( './votekeyclear.js' ),
+  require( './votekeydm.js' ),
 ];
 
 const body = [];
