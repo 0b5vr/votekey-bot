@@ -4,7 +4,6 @@
     "start": "node scripts/index.js"
   },
   "dependencies": {
-    "@dice-roller/rpg-dice-roller": "^5.0.0",
     "@google-cloud/firestore": "^6.7.0",
     "discord-interactions": "^3.4.0",
     "discord.js": "^14.13.0",
