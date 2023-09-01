@@ -1,5 +1,6 @@
 const commands = [
   require( './dmping.js' ),
+  require( './dmsend.js' ),
   require( './ping.js' ),
   require( './pop.js' ),
   require( './push.js' ),
