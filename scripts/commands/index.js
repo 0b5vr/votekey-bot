@@ -1,4 +1,5 @@
 const commands = [
+  require( './ping.js' ),
   require( './votekeyadd.js' ),
   require( './votekeyclear.js' ),
   require( './votekeydm.js' ),
