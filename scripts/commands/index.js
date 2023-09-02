@@ -2,6 +2,7 @@ const commands = [
   require( './ping.js' ),
   require( './votekeyadd.js' ),
   require( './votekeyclear.js' ),
+  require( './votekeycount.js' ),
   require( './votekeydm.js' ),
 ];
 

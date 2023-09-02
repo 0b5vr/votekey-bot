@@ -21,12 +21,13 @@ const func = async ( interaction, res ) => {
   const optionVotekeysArray = optionVotekeys.split( ' ' );
 
   const doc = firestore.doc( `votekeys/${ guildId }` );
-  const votekeys = ( await doc.get() )?.get( 'votekeys' ) ?? [];
+  const snapshot = await doc.get();
+  const votekeys = snapshot?.get( 'votekeys' ) ?? [];
 
   votekeys.push( ...optionVotekeysArray );
   await doc.set( { votekeys } );
 
-  return await resChannelMessage( res, `✅ Added ${ optionVotekeysArray.length } votekeys successfully! I currently have ${ votekeys.length } available votekeys.` );
+  return await resChannelMessage( res, `✅ Added ${ optionVotekeysArray.length } votekeys successfully!` );
 };
 
 module.exports = { data, func };
