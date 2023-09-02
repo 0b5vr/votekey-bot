@@ -1,6 +1,6 @@
 const { InteractionResponseType } = require( 'discord-interactions' );
 
-async function resChannelMessage( res, content ) {
+async function replyChannelMessage( res, content ) {
   return await res.send( {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
@@ -9,4 +9,4 @@ async function resChannelMessage( res, content ) {
   } );
 }
 
-module.exports = { resChannelMessage };
+module.exports = { replyChannelMessage };

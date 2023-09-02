@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
 const { Firestore } = require( '@google-cloud/firestore' );
-const { resDeferredChannelMessage } = require( './utils/resDeferredChannelMessage.js' );
-const { updateChannelMessage } = require( './utils/updateChannelMessage.js' );
+const { replyDeferredChannelMessage } = require( '../utils/replyDeferredChannelMessage.js' );
+const { updateChannelMessage } = require( '../utils/updateChannelMessage.js' );
 
 const firestore = new Firestore();
 
@@ -9,8 +9,8 @@ const data = new SlashCommandBuilder()
   .setName( 'votekeycount' )
   .setDescription( 'Count currently registered votekeys.' );
 
-const func = async ( interaction, res ) => {
-  await resDeferredChannelMessage( res );
+const func = async ( interaction, reply ) => {
+  await replyDeferredChannelMessage( reply );
 
   const token = interaction.token;
   const guildId = interaction.data.guild_id;

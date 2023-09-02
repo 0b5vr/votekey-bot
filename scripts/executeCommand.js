@@ -1,6 +1,7 @@
 const { InteractionResponseType, InteractionType } = require( 'discord-interactions' );
 const { funcs } = require( './commands/index.js' );
-const { updateCommands } = require( './updateCommands' );
+const { updateCommands } = require( './updateCommands.js' );
+const { replyChannelMessage } = require( './utils/replyChannelMessage.js' );
 
 /**
  * @param {import( 'fastify' ).FastifyRequest} req
@@ -14,12 +15,7 @@ async function executeCommand( req, reply ) {
     const func = funcs[ name ];
 
     if ( func == null ) {
-      return reply.status( 500 ).send( {
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `The command ${ name } is not implemented!`,
-        },
-      } );
+      return await replyChannelMessage( reply, `❌ The command ${ name } is not implemented!` );
     }
 
     await func( interaction, reply );
@@ -27,7 +23,7 @@ async function executeCommand( req, reply ) {
     // Make the command listing up to date
     await updateCommands( interaction.data.guild_id );
   } else {
-    return reply.send( {
+    return await reply.send( {
       type: InteractionResponseType.PONG,
     } );
   }
