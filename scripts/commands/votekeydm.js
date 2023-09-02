@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
 const { Firestore } = require( '@google-cloud/firestore' );
-const { replyDeferredChannelMessage } = require( '../utils/replyDeferredChannelMessage.js' );
-const { updateChannelMessage } = require( '../utils/updateChannelMessage.js' );
 const { sendDM } = require( '../utils/sendDM.js' );
 
 const firestore = new Firestore();
@@ -19,10 +17,7 @@ const data = new SlashCommandBuilder()
     .setRequired( true )
   );
 
-const func = async ( interaction, reply ) => {
-  await replyDeferredChannelMessage( reply );
-
-  const token = interaction.token;
+const deferredFunc = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
   const options = interaction.data.options;
 
@@ -33,7 +28,7 @@ const func = async ( interaction, reply ) => {
   const votekeys = snapshot?.get( 'votekeys' ) ?? [];
 
   if ( votekeys.length === 0 ) {
-    return await updateChannelMessage( token, '❌ No votekeys left! Please add new votekeys!' );
+    return '❌ No votekeys left! Please add new votekeys!';
   }
 
   const votekey = votekeys.shift();
@@ -44,16 +39,15 @@ const func = async ( interaction, reply ) => {
     await sendDM( user, content );
   } catch ( error ) {
     if ( error.code === 50007 ) {
-      return await updateChannelMessage( token, '❌ Could not send a DM. Maybe the user is set not to receive DMs.' );
+      return '❌ Could not send a DM. Maybe the user is set not to receive DMs.';
     } else {
-      console.error( JSON.stringify( error ) );
-      return await updateChannelMessage( token, '👾 Something went wrong!' );
+      throw error;
     }
   }
 
   await doc.set( { votekeys } );
 
-  return await updateChannelMessage( token, `✅ Sent a votekey to <@${ user }> via DM!` );
+  return `✅ Sent a votekey to <@${ user }> via DM!`;
 };
 
-module.exports = { data, func };
+module.exports = { data, deferredFunc };

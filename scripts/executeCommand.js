@@ -1,7 +1,23 @@
-const { InteractionResponseType, InteractionType } = require( 'discord-interactions' );
-const { funcs } = require( './commands/index.js' );
+const { InteractionType } = require( 'discord-interactions' );
+const { funcs, deferredFuncs } = require( './commands/index.js' );
 const { updateCommands } = require( './updateCommands.js' );
 const { replyChannelMessage } = require( './utils/replyChannelMessage.js' );
+const { replyDeferredChannelMessage } = require( './utils/replyDeferredChannelMessage.js' );
+const { replyPong } = require( './utils/replyPong.js' );
+
+async function sendDeferredRequest( interaction ) {
+  const localUrl = 'http://0.0.0.0:' + ( process.env.PORT ?? 8080 );
+  const url = process.env.SERVICE_URL ?? localUrl;
+  const endpoint = url + '/defer';
+
+  await fetch( endpoint, {
+    method: 'post',
+    body: JSON.stringify( interaction ),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  } );
+};
 
 /**
  * @param {import( 'fastify' ).FastifyRequest} req
@@ -14,18 +30,26 @@ async function executeCommand( req, reply ) {
     const name = interaction.data.name;
     const func = funcs[ name ];
 
-    if ( func == null ) {
-      return await replyChannelMessage( reply, `❌ The command ${ name } is not implemented!` );
-    }
-
-    await func( interaction, reply );
-
     // Make the command listing up to date
     await updateCommands( interaction.data.guild_id );
+
+    if ( funcs[ name ] ) {
+      let content;
+
+      try {
+        content = await func( interaction, reply );
+      } catch ( error ) {
+        console.error( JSON.stringify( error ) );
+        content = '👾 Something went wrong!';
+      }
+
+      return await replyChannelMessage( reply, content );
+    } else if ( deferredFuncs[ name ] ) {
+      sendDeferredRequest( interaction );
+      return await replyDeferredChannelMessage( reply );
+    }
   } else {
-    return await reply.send( {
-      type: InteractionResponseType.PONG,
-    } );
+    return await replyPong( reply );
   }
 }
 

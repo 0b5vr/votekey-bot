@@ -1,4 +1,5 @@
 const { executeCommand } = require( './executeCommand.js' );
+const { executeDeferred } = require( './executeDeferred.js' );
 const { verifyRequest } = require( './verifyRequest.js' );
 const { updateHandler } = require( './updateHandler.js' );
 
@@ -11,7 +12,7 @@ const { updateHandler } = require( './updateHandler.js' );
   await server.register( require( 'fastify-raw-body' ) );
 
   server.all( '/', { preHandler: verifyRequest }, executeCommand );
-
+  server.all( '/defer', executeDeferred );
   server.all( '/update', updateHandler );
 
   await server.listen(

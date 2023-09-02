@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
 const { Firestore } = require( '@google-cloud/firestore' );
-const { replyDeferredChannelMessage } = require( '../utils/replyDeferredChannelMessage.js' );
-const { updateChannelMessage } = require( '../utils/updateChannelMessage.js' );
 
 const firestore = new Firestore();
 
@@ -14,10 +12,7 @@ const data = new SlashCommandBuilder()
     .setRequired( true )
   );
 
-const func = async ( interaction, reply ) => {
-  await replyDeferredChannelMessage( reply );
-
-  const token = interaction.token;
+const deferredFunc = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
   const options = interaction.data.options;
 
@@ -32,7 +27,7 @@ const func = async ( interaction, reply ) => {
   votekeys.push( ...optionVotekeysArray );
   await doc.set( { votekeys } );
 
-  return await updateChannelMessage( token, `✅ Added ${ optionVotekeysArray.length } votekeys successfully!` );
+  return `✅ Added ${ optionVotekeysArray.length } votekeys successfully!`;
 };
 
-module.exports = { data, func };
+module.exports = { data, deferredFunc };

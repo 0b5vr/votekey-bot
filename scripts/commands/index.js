@@ -8,12 +8,20 @@ const commands = [
 
 const body = [];
 const funcs = {};
+const deferredFuncs = {};
 
 commands.forEach( ( command ) => {
   const name = command.data.name;
 
   body.push( command.data );
-  funcs[ name ] = command.func;
+
+  if ( command.func ) {
+    funcs[ name ] = command.func;
+  }
+
+  if ( command.deferredFunc ) {
+    deferredFuncs[ name ] = command.deferredFunc;
+  }
 } );
 
-module.exports = { body, funcs };
+module.exports = { body, funcs, deferredFuncs };
