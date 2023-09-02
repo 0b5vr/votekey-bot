@@ -30,9 +30,6 @@ async function executeCommand( req, reply ) {
     const name = interaction.data.name;
     const func = funcs[ name ];
 
-    // Make the command listing up to date
-    await updateCommands( interaction.data.guild_id );
-
     if ( funcs[ name ] ) {
       let content;
 
