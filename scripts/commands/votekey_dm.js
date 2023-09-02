@@ -9,7 +9,7 @@ const template = `Your votekey: %votekey%
 Register from https://wuhu.tokyodemofest.jp/index.php?page=Login !`;
 
 const data = new SlashCommandBuilder()
-  .setName( 'votekeydm' )
+  .setName( 'votekey_dm' )
   .setDescription( 'Send a votekey to the specified user via DM.' )
   .addUserOption( ( option ) => option
     .setName( 'user' )

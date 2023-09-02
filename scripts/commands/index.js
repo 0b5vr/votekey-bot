@@ -1,27 +1,9 @@
-const commands = [
-  require( './ping.js' ),
-  require( './votekeyadd.js' ),
-  require( './votekeyclear.js' ),
-  require( './votekeycount.js' ),
-  require( './votekeydm.js' ),
-];
-
-const body = [];
-const funcs = {};
-const deferredFuncs = {};
-
-commands.forEach( ( command ) => {
-  const name = command.data.name;
-
-  body.push( command.data );
-
-  if ( command.func ) {
-    funcs[ name ] = command.func;
-  }
-
-  if ( command.deferredFunc ) {
-    deferredFuncs[ name ] = command.deferredFunc;
-  }
-} );
-
-module.exports = { body, funcs, deferredFuncs };
+module.exports = {
+  commands: {
+    ping: require( './ping.js' ),
+    votekey_add: require( './votekey_add.js' ),
+    votekey_clear: require( './votekey_clear.js' ),
+    votekey_count: require( './votekey_count.js' ),
+    votekey_dm: require( './votekey_dm.js' ),
+  },
+};

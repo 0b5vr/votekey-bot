@@ -4,7 +4,7 @@ const { Firestore } = require( '@google-cloud/firestore' );
 const firestore = new Firestore();
 
 const data = new SlashCommandBuilder()
-  .setName( 'votekeyclear' )
+  .setName( 'votekey_clear' )
   .setDescription( 'Clear the existing votekey list.' );
 
 const deferredFunc = async ( interaction ) => {
