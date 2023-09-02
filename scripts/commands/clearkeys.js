@@ -11,7 +11,7 @@ const deferredFunc = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
 
   const doc = firestore.doc( `votekeys/${ guildId }` );
-  await doc.set( { votekeys: [] } );
+  await doc.set( { votekeys: [] }, { merge: true } );
 
   return '✅ Successfully cleared the votekey list.';
 };

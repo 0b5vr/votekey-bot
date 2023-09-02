@@ -4,10 +4,6 @@ const { sendDM } = require( '../utils/sendDM.js' );
 
 const firestore = new Firestore();
 
-const template = `Your votekey: %votekey%
-
-Register from https://wuhu.tokyodemofest.jp/index.php?page=Login !`;
-
 const data = new SlashCommandBuilder()
   .setName( 'dmkey' )
   .setDescription( 'Send a votekey to the specified user via DM.' )
@@ -26,6 +22,7 @@ const deferredFunc = async ( interaction ) => {
   const doc = firestore.doc( `votekeys/${ guildId }` );
   const snapshot = await doc.get();
   const votekeys = snapshot?.get( 'votekeys' ) ?? [];
+  const footer = snapshot?.get( 'footer' ) ?? [];
 
   if ( votekeys.length === 0 ) {
     return '❌ No votekeys left! Please add new votekeys!';
@@ -33,7 +30,8 @@ const deferredFunc = async ( interaction ) => {
 
   const votekey = votekeys.shift();
 
-  const content = template.replace( '%votekey%', `\`${ votekey }\`` );
+  const content = `Your votekey: \`${ votekey }\`
+${ footer }`;
 
   try {
     await sendDM( user, content );
@@ -45,7 +43,7 @@ const deferredFunc = async ( interaction ) => {
     }
   }
 
-  await doc.set( { votekeys } );
+  await doc.set( { votekeys }, { merge: true } );
 
   return `✅ Sent a votekey to <@${ user }> via DM!`;
 };

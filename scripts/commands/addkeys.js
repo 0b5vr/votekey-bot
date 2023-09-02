@@ -25,7 +25,7 @@ const deferredFunc = async ( interaction ) => {
   const votekeys = snapshot?.get( 'votekeys' ) ?? [];
 
   votekeys.push( ...optionVotekeysArray );
-  await doc.set( { votekeys } );
+  await doc.set( { votekeys }, { merge: true } );
 
   return `✅ Added ${ optionVotekeysArray.length } votekeys successfully!`;
 };
