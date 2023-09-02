@@ -23,7 +23,7 @@ const func = async ( interaction, res ) => {
   await resDeferredChannelMessage( res );
 
   const token = interaction.token;
-  const guildId = interaction.data.guid_id;
+  const guildId = interaction.data.guild_id;
   const options = interaction.data.options;
 
   const user = options?.find( ( v ) => v.name === 'user' )?.value;
