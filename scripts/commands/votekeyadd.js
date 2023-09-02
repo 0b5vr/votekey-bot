@@ -7,7 +7,6 @@ const firestore = new Firestore();
 const data = new SlashCommandBuilder()
   .setName( 'votekeyadd' )
   .setDescription( 'Add votekeys. The votekey list is specific to the server.' )
-  .setDefaultMemberPermissions( 0 )
   .addStringOption( ( option ) => option
     .setName( 'votekeys' )
     .setDescription( 'Space-separated list of votekeys.' )

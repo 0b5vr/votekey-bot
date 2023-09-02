@@ -12,7 +12,6 @@ Register from https://wuhu.tokyodemofest.jp/index.php?page=Login !`;
 const data = new SlashCommandBuilder()
   .setName( 'votekeydm' )
   .setDescription( 'Send a votekey to the specified user via DM.' )
-  .setDefaultMemberPermissions( 0 )
   .addUserOption( ( option ) => option
     .setName( 'user' )
     .setDescription( 'The destination user.' )

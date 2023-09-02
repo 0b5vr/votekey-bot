@@ -6,8 +6,7 @@ const firestore = new Firestore();
 
 const data = new SlashCommandBuilder()
   .setName( 'votekeyclear' )
-  .setDescription( 'Clear the existing votekey list.' )
-  .setDefaultMemberPermissions( 0 )
+  .setDescription( 'Clear the existing votekey list.' );
 
 const func = async ( interaction, res ) => {
   const guildId = interaction.data.guid_id;
