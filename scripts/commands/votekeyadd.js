@@ -6,7 +6,7 @@ const firestore = new Firestore();
 
 const data = new SlashCommandBuilder()
   .setName( 'votekeyadd' )
-  .setDescription( 'Add votekeys.' )
+  .setDescription( 'Add votekeys. The votekey list is specific to the server.' )
   .setDefaultMemberPermissions( 0 )
   .addStringOption( ( option ) => option
     .setName( 'votekeys' )
@@ -15,12 +15,13 @@ const data = new SlashCommandBuilder()
   );
 
 const func = async ( interaction, res ) => {
+  const guildId = interaction.data.guid_id;
   const options = interaction.data.options;
 
   const optionVotekeys = options?.find( ( v ) => v.name === 'votekeys' )?.value;
   const optionVotekeysArray = optionVotekeys.split( ' ' );
 
-  const doc = firestore.doc( 'votekeys/doc' );
+  const doc = firestore.doc( `votekeys/${ guildId }` );
   const votekeys = ( await doc.get() )?.get( 'votekeys' ) ?? [];
 
   votekeys.push( ...optionVotekeysArray );

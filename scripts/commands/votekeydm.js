@@ -20,11 +20,12 @@ const data = new SlashCommandBuilder()
   );
 
 const func = async ( interaction, res ) => {
+  const guildId = interaction.data.guid_id;
   const options = interaction.data.options;
 
   const user = options?.find( ( v ) => v.name === 'user' )?.value;
 
-  const doc = firestore.doc( 'votekeys/doc' );
+  const doc = firestore.doc( `votekeys/${ guildId }` );
   const snapshot = await doc.get();
   const votekeys = snapshot?.get( 'votekeys' ) ?? [];
 
@@ -49,7 +50,7 @@ const func = async ( interaction, res ) => {
 
   await doc.set( { votekeys } );
 
-  return await resChannelMessage( res, '✅ Sent a votekey via DM!' );
+  return await resChannelMessage( res, `✅ Sent a votekey to <@${ user }> via DM!` );
 };
 
 module.exports = { data, func };

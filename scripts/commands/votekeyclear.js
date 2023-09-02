@@ -10,7 +10,9 @@ const data = new SlashCommandBuilder()
   .setDefaultMemberPermissions( 0 )
 
 const func = async ( interaction, res ) => {
-  const doc = firestore.doc( 'votekeys/doc' );
+  const guildId = interaction.data.guid_id;
+
+  const doc = firestore.doc( `votekeys/${ guildId }` );
   await doc.set( { votekeys: [] } );
 
   return await resChannelMessage( res, '✅ Successfully cleared the votekey list.' );
