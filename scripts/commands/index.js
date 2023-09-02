@@ -1,9 +1,9 @@
 module.exports = {
   commands: {
     ping: require( './ping.js' ),
-    votekey_add: require( './votekey_add.js' ),
-    votekey_clear: require( './votekey_clear.js' ),
-    votekey_count: require( './votekey_count.js' ),
-    votekey_dm: require( './votekey_dm.js' ),
+    addkeys: require( './addkeys.js' ),
+    clearkeys: require( './clearkeys.js' ),
+    countkeys: require( './countkeys.js' ),
+    dmkey: require( './dmkey.js' ),
   },
 };

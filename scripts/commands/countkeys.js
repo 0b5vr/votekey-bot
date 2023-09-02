@@ -4,7 +4,7 @@ const { Firestore } = require( '@google-cloud/firestore' );
 const firestore = new Firestore();
 
 const data = new SlashCommandBuilder()
-  .setName( 'votekey_count' )
+  .setName( 'countkeys' )
   .setDescription( 'Count currently registered votekeys.' );
 
 const deferredFunc = async ( interaction ) => {

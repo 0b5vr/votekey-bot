@@ -4,7 +4,7 @@ const { Firestore } = require( '@google-cloud/firestore' );
 const firestore = new Firestore();
 
 const data = new SlashCommandBuilder()
-  .setName( 'votekey_add' )
+  .setName( 'addkeys' )
   .setDescription( 'Add votekeys. The votekey list is specific to the server.' )
   .addStringOption( ( option ) => option
     .setName( 'votekeys' )
