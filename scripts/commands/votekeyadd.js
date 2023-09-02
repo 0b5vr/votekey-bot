@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
 const { Firestore } = require( '@google-cloud/firestore' );
-const { resChannelMessage } = require('./utils/resChannelMessage');
+const { resDeferredChannelMessage } = require( './utils/resDeferredChannelMessage.js' );
+const { updateChannelMessage } = require( './utils/updateChannelMessage.js' );
 
 const firestore = new Firestore();
 
@@ -14,11 +15,15 @@ const data = new SlashCommandBuilder()
   );
 
 const func = async ( interaction, res ) => {
+  await resDeferredChannelMessage( res );
+
+  const token = interaction.token;
   const guildId = interaction.data.guid_id;
   const options = interaction.data.options;
 
   const optionVotekeys = options?.find( ( v ) => v.name === 'votekeys' )?.value;
-  const optionVotekeysArray = optionVotekeys.split( ' ' );
+  const optionVotekeysArray = optionVotekeys.split( ' ' )
+    .filter( ( str ) => str !== '' );
 
   const doc = firestore.doc( `votekeys/${ guildId }` );
   const snapshot = await doc.get();
@@ -27,7 +32,7 @@ const func = async ( interaction, res ) => {
   votekeys.push( ...optionVotekeysArray );
   await doc.set( { votekeys } );
 
-  return await resChannelMessage( res, `✅ Added ${ optionVotekeysArray.length } votekeys successfully!` );
+  return await updateChannelMessage( token, `✅ Added ${ optionVotekeysArray.length } votekeys successfully!` );
 };
 
 module.exports = { data, func };
