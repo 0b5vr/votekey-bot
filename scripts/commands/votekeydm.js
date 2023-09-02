@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
 const { Firestore } = require( '@google-cloud/firestore' );
-const { resChannelMessage } = require('./utils/resChannelMessage');
+const { resChannelMessage } = require( './utils/resChannelMessage' );
+const { sendDM } = require( './utils/sendDM' );
 
 const firestore = new Firestore();
 
@@ -41,7 +42,7 @@ const func = async ( interaction, res ) => {
     if ( error.code === 50007 ) {
       return await resChannelMessage( res, '❌ Could not send a DM. Maybe the user is set not to receive DMs.' );
     } else {
-      console.log( JSON.stringify( haha ) );
+      console.error( JSON.stringify( error ) );
       return await resChannelMessage( res, '👾 Something went wrong!' );
     }
   }
