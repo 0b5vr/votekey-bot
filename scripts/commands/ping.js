@@ -5,7 +5,7 @@ const data = new SlashCommandBuilder()
   .setDescription( 'You\'ll expect "pong".' );
 
 const func = async ( interaction ) => {
-  return 'pong';
+  return '✅ pong';
 };
 
 module.exports = { data, func };

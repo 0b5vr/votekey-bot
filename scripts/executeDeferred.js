@@ -12,8 +12,11 @@ async function executeDeferred( req, reply ) {
   if ( interaction?.type === InteractionType.APPLICATION_COMMAND ) {
     const name = interaction.data.name;
     const command = commands[ name ];
+    const token = interaction.token;
 
     let content;
+
+    await updateChannelMessage( token, '⌛ Wait a moment...' );
 
     try {
       content = await command.func( interaction );
@@ -22,7 +25,6 @@ async function executeDeferred( req, reply ) {
       content = '👾 Something went wrong!';
     }
 
-    const token = interaction.token;
     await updateChannelMessage( token, content );
 
     return await reply.send();
