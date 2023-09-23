@@ -12,7 +12,7 @@ const data = new SlashCommandBuilder()
     .setRequired( true )
   );
 
-const deferredFunc = async ( interaction ) => {
+const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
   const options = interaction.data.options;
 
@@ -30,4 +30,4 @@ const deferredFunc = async ( interaction ) => {
   return `✅ Added ${ optionVotekeysArray.length } votekeys successfully!`;
 };
 
-module.exports = { data, deferredFunc };
+module.exports = { data, func };

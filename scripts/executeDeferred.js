@@ -16,7 +16,7 @@ async function executeDeferred( req, reply ) {
     let content;
 
     try {
-      content = await command.deferredFunc( interaction );
+      content = await command.func( interaction );
     } catch ( error ) {
       console.error( JSON.stringify( error ) );
       content = '👾 Something went wrong!';

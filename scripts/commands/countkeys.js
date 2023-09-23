@@ -7,7 +7,7 @@ const data = new SlashCommandBuilder()
   .setName( 'countkeys' )
   .setDescription( 'Count currently registered votekeys.' );
 
-const deferredFunc = async ( interaction ) => {
+const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
 
   const doc = firestore.doc( `votekeys/${ guildId }` );
@@ -17,4 +17,4 @@ const deferredFunc = async ( interaction ) => {
   return `✅ I currently have ${ votekeys.length } available votekeys.`;
 };
 
-module.exports = { data, deferredFunc };
+module.exports = { data, func };

@@ -1,6 +1,4 @@
 const { InteractionType } = require( 'discord-interactions' );
-const { commands } = require( './commands/index.js' );
-const { replyChannelMessage } = require( './utils/replyChannelMessage.js' );
 const { replyDeferredChannelMessage } = require( './utils/replyDeferredChannelMessage.js' );
 const { replyPong } = require( './utils/replyPong.js' );
 
@@ -26,24 +24,8 @@ async function executeCommand( req, reply ) {
   const interaction = req.body;
 
   if ( interaction?.type === InteractionType.APPLICATION_COMMAND ) {
-    const name = interaction.data.name;
-    const command = commands[ name ];
-
-    if ( command.func ) {
-      let content;
-
-      try {
-        content = await command.func( interaction, reply );
-      } catch ( error ) {
-        console.error( JSON.stringify( error ) );
-        content = '👾 Something went wrong!';
-      }
-
-      return await replyChannelMessage( reply, content );
-    } else if ( command.deferredFunc ) {
-      sendDeferredRequest( interaction );
-      return await replyDeferredChannelMessage( reply );
-    }
+    sendDeferredRequest( interaction );
+    return await replyDeferredChannelMessage( reply );
   } else {
     return await replyPong( reply );
   }

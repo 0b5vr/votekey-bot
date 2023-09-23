@@ -7,7 +7,7 @@ const data = new SlashCommandBuilder()
   .setName( 'clearkeys' )
   .setDescription( 'Clear the existing votekey list.' );
 
-const deferredFunc = async ( interaction ) => {
+const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
 
   const doc = firestore.doc( `votekeys/${ guildId }` );
@@ -16,4 +16,4 @@ const deferredFunc = async ( interaction ) => {
   return '✅ Successfully cleared the votekey list.';
 };
 
-module.exports = { data, deferredFunc };
+module.exports = { data, func };
