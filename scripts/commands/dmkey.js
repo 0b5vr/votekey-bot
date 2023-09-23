@@ -1,8 +1,9 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
-const { Firestore } = require( '@google-cloud/firestore' );
 const { sendDM } = require( '../utils/sendDM.js' );
-
-const firestore = new Firestore();
+const { shiftVotekey } = require( '../cruds/shiftVotekey.js' );
+const { getFooter } = require( '../cruds/getFooter.js' );
+const { DocNotFoundError, VotekeysEmptyError } = require( '../cruds/errors.js' );
+const { unshiftVotekey } = require( '../cruds/unshiftVotekey.js' );
 
 const data = new SlashCommandBuilder()
   .setName( 'dmkey' )
@@ -19,31 +20,35 @@ const func = async ( interaction ) => {
 
   const user = options?.find( ( v ) => v.name === 'user' )?.value;
 
-  const doc = firestore.doc( `votekeys/${ guildId }` );
-  const snapshot = await doc.get();
-  const votekeys = snapshot?.get( 'votekeys' ) ?? [];
-  const footer = snapshot?.get( 'footer' ) ?? [];
+  const votekey = await shiftVotekey( guildId )
+    .catch( ( error ) => {
+      if ( error instanceof DocNotFoundError || error instanceof VotekeysEmptyError ) {
+        return null;
+      } else {
+        throw error;
+      }
+    } );
 
-  if ( votekeys.length === 0 ) {
+  if ( votekey == null ) {
     return '❌ No votekeys left! Please add new votekeys!';
   }
 
-  const votekey = votekeys.shift();
+  const footer = await getFooter( guildId ) ?? '';
 
-  const content = `Your votekey: \`${ votekey }\`
+  const dmContent = `Your votekey: \`${ votekey }\`
 ${ footer }`;
 
   try {
-    await sendDM( user, content );
+    await sendDM( user, dmContent );
   } catch ( error ) {
+    await unshiftVotekey( guildId, votekey );
+
     if ( error.code === 50007 ) {
       return '❌ Could not send a DM. Maybe the user is set not to receive DMs.';
     } else {
       throw error;
     }
   }
-
-  await doc.set( { votekeys }, { merge: true } );
 
   return `✅ Sent a votekey to <@${ user }> via DM!`;
 };

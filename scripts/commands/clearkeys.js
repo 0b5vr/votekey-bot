@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
-const { Firestore } = require( '@google-cloud/firestore' );
-
-const firestore = new Firestore();
+const { clearVotekeys } = require( '../cruds/clearVotekeys' );
 
 const data = new SlashCommandBuilder()
   .setName( 'clearkeys' )
@@ -10,8 +8,7 @@ const data = new SlashCommandBuilder()
 const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
 
-  const doc = firestore.doc( `votekeys/${ guildId }` );
-  await doc.set( { votekeys: [] }, { merge: true } );
+  await clearVotekeys( guildId );
 
   return '✅ Successfully cleared the votekey list.';
 };

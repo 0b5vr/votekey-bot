@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
-const { Firestore } = require( '@google-cloud/firestore' );
-
-const firestore = new Firestore();
+const { pushVotekeys } = require( '../cruds/pushVotekeys' );
 
 const data = new SlashCommandBuilder()
   .setName( 'addkeys' )
@@ -16,18 +14,13 @@ const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
   const options = interaction.data.options;
 
-  const optionVotekeys = options?.find( ( v ) => v.name === 'votekeys' )?.value;
-  const optionVotekeysArray = optionVotekeys.split( ' ' )
+  const votekeys = options?.find( ( v ) => v.name === 'votekeys' )?.value;
+  const votekeysArray = votekeys.split( ' ' )
     .filter( ( str ) => str !== '' );
 
-  const doc = firestore.doc( `votekeys/${ guildId }` );
-  const snapshot = await doc.get();
-  const votekeys = snapshot?.get( 'votekeys' ) ?? [];
+  await pushVotekeys( guildId, votekeysArray );
 
-  votekeys.push( ...optionVotekeysArray );
-  await doc.set( { votekeys }, { merge: true } );
-
-  return `✅ Added ${ optionVotekeysArray.length } votekeys successfully!`;
+  return `✅ Added ${ votekeysArray.length } votekeys successfully!`;
 };
 
 module.exports = { data, func };

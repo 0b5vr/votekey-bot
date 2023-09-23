@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require( '@discordjs/builders' );
-const { Firestore } = require( '@google-cloud/firestore' );
-
-const firestore = new Firestore();
+const { getVotekeys } = require( '../cruds/getVotekeys' );
 
 const data = new SlashCommandBuilder()
   .setName( 'countkeys' )
@@ -10,9 +8,7 @@ const data = new SlashCommandBuilder()
 const func = async ( interaction ) => {
   const guildId = interaction.data.guild_id;
 
-  const doc = firestore.doc( `votekeys/${ guildId }` );
-  const snapshot = await doc.get();
-  const votekeys = snapshot?.get( 'votekeys' ) ?? [];
+  const votekeys = ( await getVotekeys( guildId ) ) ?? [];
 
   return `✅ I currently have ${ votekeys.length } available votekeys.`;
 };
